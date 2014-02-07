@@ -2,21 +2,16 @@
 
 /* relative path to settings.php
 	this file
-		<<drupal_root>>/sites/all/modules/custom/cul_common/authenticate/index.php
+		<<drupal_root>>/secure/index.php
 	settings
 		<<drupal_root>>/sites/default/settings.php
 	path
-		../../../../../default/settings.php
+		../sites/default/settings.php
 	use dirname
-		dirname(__FILE__)	authenticate
-		dirname(dirname(... cul_common
-		dirname(dirname(dirname(... custom
-		dirname(dirname(dirname(dirname(... modules
-		dirname(dirname(dirname(dirname(dirname(... all
-		dirname(dirname(dirname(dirname(dirname(dirname(... sites
+		dirname(__FILE__)	secure
 */
 
-$settings_path = realpath(dirname(__FILE__) . '/' . '../../../../../default/settings.php');
+$settings_path = realpath(dirname(__FILE__) . '/' . '../sites/default/settings.php');
 require_once $settings_path;
 
 $secret = '';
