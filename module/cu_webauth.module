@@ -282,7 +282,7 @@ function cu_webauth_authenticate_user($destination = NULL) {
  */
 function cu_webauth_logout($destination = NULL, $delete_cuwa_cookies = FALSE) {
   if (function_exists('cuwebauth_logout')) {
-    cuwebauth_logout($destination, $delete_cuwa_cookies);
+    cu_webauth_do_logout($destination, $delete_cuwa_cookies);
     return TRUE;
   }
   return FALSE;
