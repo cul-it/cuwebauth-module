@@ -201,6 +201,9 @@ function cu_webauth_menu() {
  * callback function for login page
  */
 function cu_webauth_page2() {
+  if (!cu_webauth_https()) {
+    return MENU_ACCESS_DENIED;
+  }
   if (cu_webauth_test_authentication()) {
     $path = "secure/cu_webauth/account";
   }
@@ -255,7 +258,7 @@ function cu_webauth_test_authentication() {
  * login via CUWebAuth and return netid or FALSE
  */
 function cu_webauth_authenticate_user($destination = NULL) {
-  if (function_exists('cu_authenticate')) {
+  if (function_exists('cu_webauth_authenticate')) {
     $has_dest = ($destination == NULL) ? 'no dest ' : 'has dest '; //jgrtest
     if ($destination == NULL) {
       // put url of current page into destination
@@ -443,4 +446,11 @@ function cu_webauth_claim_user($users, $view) {
       );
     $account = user_save($auser, $userinfo);
   }
+}
+
+/**
+ * return true if https
+ */
+function cu_webauth_https() {
+  return (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']));
 }
