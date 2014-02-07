@@ -53,9 +53,11 @@ if (isset($netid) && $netid) {
   setcookie('verify_netid', md5($netid . $secret), 0, '/', '.cornell.edu');
 }
 
-$destination = urldecode($_GET['destination']);
 if (! isset($_GET['destination']) || $_GET['destination'] == '') {
   $destination = '/';
+}
+else {
+  $destination = urldecode($_GET['destination']);
 }
 
 header('Location: https://' . $_SERVER['HTTP_HOST'] . $destination);
