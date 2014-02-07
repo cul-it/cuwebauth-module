@@ -271,7 +271,7 @@ function cu_webauth_authenticate_user($destination = NULL) {
     // find if a permit is required
     $required_permit = variable_get('cu_webauth_block_required_permit', 'library');
     // if this has to go off to CUWebAuth it won't return from this function
-    $netid = cu_authenticate($destination, $required_permit);
+    $netid = cu_webauth_authenticate($destination, $required_permit);
     return $netid;
   }
   return FALSE;
