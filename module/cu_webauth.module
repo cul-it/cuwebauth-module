@@ -205,10 +205,10 @@ function cu_webauth_page2() {
     return MENU_ACCESS_DENIED;
   }
   if (cu_webauth_test_authentication()) {
-    $path = "secure/cu_webauth/account";
+    $path = "/secure/cu_webauth/account";
   }
   else {
-    $path = "secure/cu_webauth/cuwebauth";
+    $path = "/secure/cu_webauth/cuwebauth";
   }
   drupal_goto($path);
 }
