@@ -1,5 +1,5 @@
 ; $Id$
-name = cu_webauth
+name = Cornell Web Authorize
 description = Cornell University authorization using CUWebAuth
-package = Cornell University Library
+package = Cornell University
 core = 7.x
