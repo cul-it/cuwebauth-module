@@ -6,6 +6,9 @@
  * callback function for cu_webauth/cuwebauth
  */
 function cu_webauth_cuwebauth() {
+  if (!cu_webauth_https()) {
+    return MENU_ACCESS_DENIED;
+  }
   if (cu_webauth_test_authentication()) {
     // if the user is already authenticated cu_webauth_authenticate_user
     // will return - just skip bogus error message
@@ -22,6 +25,9 @@ function cu_webauth_cuwebauth() {
  * callback function for cu_webauth/account
  */
 function cu_webauth_account() {
+  if (!cu_webauth_https()) {
+    return MENU_ACCESS_DENIED;
+  }
   // user should be cuwebautherized by now
   if (!cu_webauth_test_authentication()) {
     $output = t('Please log in via cu_webauth!');
@@ -62,6 +68,9 @@ function cu_webauth_account() {
  * callback function for cu_webauth/hello
  */
 function cu_webauth_hello() {
+  if (!cu_webauth_https()) {
+    return MENU_ACCESS_DENIED;
+  }
   // user should be cuwebautherized & logged in by now
   if (!cu_webauth_test_authentication() || !user_is_logged_in()) {
     $output = t('Please log in via cu_webauth!');
