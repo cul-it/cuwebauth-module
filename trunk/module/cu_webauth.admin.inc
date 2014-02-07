@@ -11,7 +11,7 @@ function cu_webauth_cuwebauth() {
     // will return - just skip bogus error message
     drupal_goto("secure/cu_webauth/account"); // no leading slash
   }
-  $path = "secure/cu_webauth/account"; // destination requires leading slash
+  $path = "/secure/cu_webauth/account"; // destination requires leading slash
   $netid = cu_webauth_authenticate_user($path);
   // note: if this actually returns there is a problem
   $output = t('Unable to authenticate with CUWebAuth.');
