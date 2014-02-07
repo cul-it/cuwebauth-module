@@ -24,7 +24,7 @@ function cu_webauth_authenticate($destination = '', $permit = '') {
   if (isset($netID) && $netID != '') {
     return $netID;
   }
-  else if (verify_netid()) {
+  else if (cu_webauth_verify_netid()) {
     return $_COOKIE['netid'];
   }
   else {
