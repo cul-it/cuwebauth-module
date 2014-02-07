@@ -244,9 +244,9 @@ function cu_webauth_create_and_login_user($netid) {
  */
 function cu_webauth_test_authentication() {
   $result = FALSE;
-  if (function_exists('verify_netid')) {
+  if (function_exists('cu_webauth_verify_netid')) {
     // this will never go off to CUWebAuth never to return like cu_authenticate can!
-    $result = verify_netid();
+    $result = cu_webauth_verify_netid();
   }
   else {
     drupal_set_message(t('Unable to verify netid.'));
@@ -284,7 +284,7 @@ function cu_webauth_authenticate_user($destination = NULL) {
  * logout via CUWebAuth
  */
 function cu_webauth_logout($destination = NULL, $delete_cuwa_cookies = FALSE) {
-  if (function_exists('cuwebauth_logout')) {
+  if (function_exists('cu_webauth_do_logout')) {
     cu_webauth_do_logout($destination, $delete_cuwa_cookies);
     return TRUE;
   }
