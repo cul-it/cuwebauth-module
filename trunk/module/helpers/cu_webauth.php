@@ -20,13 +20,6 @@ function cu_webauth_verify_netid() {
  * and upon successful authentication, it will set a 'netid' cookie.
  */
 function cu_webauth_authenticate($destination = '', $permit = '') {
-  if (isset($destination) && $destination != '') {
-    $destination = urlencode($destination);
-  }
-  else {
-    $destination = urlencode(request_uri());
-  }
-
   $netID = getenv('REMOTE_USER');
   if (isset($netID) && $netID != '') {
     return $netID;
@@ -39,14 +32,17 @@ function cu_webauth_authenticate($destination = '', $permit = '') {
     //assumes use of 'friendly' URL's
     get_and_set_cu_webauth_secret();
     unset($_GET['destination']);
+    $path = drupal_get_path('module', 'cu_webauth') . '/authenticate/';
     if (!empty($permit)) {
-      $path = "secure/$permit/index.php";
+      $path .= "$permit/";
     }
-    else {
-      $path = "secure/index.php";
+    $path .= 'index.php';
+
+    if (empty($destination)) {
+      $destination = request_uri();
     }
-    drupal_goto($path, array('query' => array('destination' => $destination, 'https' => TRUE,
-      'alias' => TRUE)));
+
+    drupal_goto($path, array('query' => array('destination' => $destination)));
   }
 }
 
