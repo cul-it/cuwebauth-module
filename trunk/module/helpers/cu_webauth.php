@@ -53,7 +53,7 @@ function cu_webauth_authenticate($destination = '', $permit = '') {
 /**
  * Simulate a CUWebAuth logout.
  */
-function cu_webauth_logout($logout_url = NULL, $include_cu_webauth_cookies = FALSE) {
+function cu_webauth_do_logout($logout_url = NULL, $include_cu_webauth_cookies = FALSE) {
   unset($_COOKIE['netid']);
   unset($_COOKIE['verify_netid']);
   setcookie('netid', '', REQUEST_TIME - 3600);
