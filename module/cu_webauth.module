@@ -158,7 +158,7 @@ function cu_webauth_menu() {
     'type' => MENU_CALLBACK,
     );
 
-  $items['cu_webauth'] = array(
+  $items['secure/cu_webauth'] = array(
     'title' => 'Cornell University Login',
     'description' => 'Login with CUWebAuth',
     'page callback' => 'cu_webauth_page2',
