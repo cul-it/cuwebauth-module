@@ -9,7 +9,7 @@
  *    configuring the block lets you add/remove a required permit name
  */
 
-define("AUTHENTICATION_MODULE_NAME", "cu_webauth_module");
+define("AUTHENTICATION_MODULE_NAME", "culauth"); // same as cul_login
 
 require_once(dirname(__FILE__) . '/helpers/cu_webauth.php');
 
