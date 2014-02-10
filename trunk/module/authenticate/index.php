@@ -40,7 +40,7 @@ if (!$connection || !mysql_select_db($url['path'])) {
 }
 else {
   $table_name = $db['prefix'] . 'cache';
-  $result = mysql_query('SELECT data from ' . $table_name . ' WHERE cid = "cuwa_net_id_secret"');
+  $result = mysql_query('SELECT data from ' . $table_name . ' WHERE cid = "cu_webauth_net_id_secret"');
   if (!$result) {
     die('Invalid query: ' . mysql_error());
   }
