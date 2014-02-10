@@ -329,18 +329,11 @@ function cu_webauth_test_authentication() {
  */
 function cu_webauth_authenticate_user($destination = NULL) {
   if (function_exists('cu_webauth_authenticate')) {
-    $has_dest = ($destination == NULL) ? 'no dest ' : 'has dest '; //jgrtest
     if ($destination == NULL) {
       // put url of current page into destination
       $path = isset($_GET['q']) ? $_GET['q'] : '<front>';
       // note: this can not be an absolute path
-      $destination = url($path, array('absolute' => FALSE, 'https' => TRUE)); //jgrtest
     }
-    else {
-      //$destination = url($destination, array('absolute' => FALSE, 'https' => TRUE)); //jgrtest
-    }
-    drupal_set_message($has_dest . $destination);
-    //return FALSE;
     // find if a permit is required
     $required_permit = variable_get('cu_webauth_block_required_permit', 'library');
     // if this has to go off to CUWebAuth it won't return from this function
