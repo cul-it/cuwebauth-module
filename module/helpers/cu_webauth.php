@@ -5,15 +5,12 @@ $cu_webauth_secret_cache_name = 'cu_webauth_net_id_secret';
 
 function cu_webauth_verify_netid() {
   $verified = FALSE;
-  if (!isset($_COOKIE['netid'])) drupal_set_message(t('no netid cookie'), 'status', FALSE); //jgrtest
-  if (!isset($_COOKIE['verify_netid'])) drupal_set_message(t('no verify_netid cookie'), 'status', FALSE); //jgrtest
   if (isset($_COOKIE['netid']) && isset($_COOKIE['verify_netid'])) {
     $secret = get_and_set_cu_webauth_secret();
     global $cu_webauth_secret_cache_name;
     if (md5($_COOKIE['netid'] . $secret) == $_COOKIE['verify_netid']) {
       $verified = TRUE;
     }
-    else { drupal_set_message(t("not verified"), 'status', FALSE); } //jgrtest
   }
   return $verified;
 }
