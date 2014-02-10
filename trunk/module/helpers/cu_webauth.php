@@ -3,6 +3,23 @@
 global $cu_webauth_secret_cache_name;
 $cu_webauth_secret_cache_name = 'cu_webauth_net_id_secret';
 
+/**
+ * Don't bother admins or various content managers with authentication
+ * when they are already authenticated with Drupal.
+ * now based on cul_common_permission
+ */
+function cu_webauth_can_bypass_auth($roles = NULL) {
+  return user_access('bypass cuwebauth');
+}
+
+/**
+ * Who is allowed to set CUWebAuth on nodes,
+ * now based on cul_common_permission
+ */
+function cu_webauth_can_set_auth($roles = NULL) {
+  return user_access('access cuwebauth checkbox');
+}
+
 function cu_webauth_verify_netid() {
   $verified = FALSE;
   if (isset($_COOKIE['netid']) && isset($_COOKIE['verify_netid'])) {

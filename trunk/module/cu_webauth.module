@@ -9,6 +9,8 @@
  *    configuring the block lets you add/remove a required permit name
  */
 
+define("AUTHENTICATION_MODULE_NAME", "cu_webauth_module");
+
 require_once(dirname(__FILE__) . '/helpers/cu_webauth.php');
 
 /**
@@ -25,6 +27,129 @@ function cu_webauth_permission() {
       'description' => t('Can bypass CU_WebAuth when required by a node'),
       ),
     );
+}
+
+/**
+ * Implements hook_init().
+ * this implements the patch for panels on http://drupal.org/node/362065
+ */
+function cu_webauth_init() {
+  // Make sure CUWebAuth is triggered properly
+  // when the node_view is overwritten by the Panels module
+  if (module_exists('panels') && 'node' == arg(0) && is_numeric(arg(1))) {
+    $node = node_load(arg(1));
+    if (FALSE !== $node) {
+      cu_webauth_node_view($node);
+    }
+  }
+}
+
+/**
+ * Implements hook_menu().
+ * this adds a page called 'cu_webauth' to any site using this module
+ */
+function cu_webauth_menu() {
+  $items = array();
+
+  $items['secure/cu_webauth_pin'] = array(
+    'title' => 'Cornell University Mobile Login',
+    'description' => 'Login with CUWebAuth and pin',
+    'page callback' => 'cu_webauth_pin_page',
+    //'access callback' => TRUE,
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    );
+
+  $items['secure/cu_webauth'] = array(
+    'title' => 'Cornell University Login',
+    'description' => 'Login with CUWebAuth',
+    'page callback' => 'cu_webauth_page2',
+    //'access callback' => TRUE,
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    );
+  $items['secure/cu_webauth/cuwebauth'] = array(
+    'title' => 'Cornell University Login - CUWebAuth',
+    'description' => 'CUWebAuth',
+    'page callback' => 'cu_webauth_cuwebauth',
+    //'access callback' => TRUE,
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'file' => 'cu_webauth.admin.inc',
+    );
+  $items['secure/cu_webauth/account'] = array(
+    'title' => 'Cornell University Login - Account',
+    'description' => 'Account Check',
+    'page callback' => 'cu_webauth_account',
+    //'access callback' => TRUE,
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'file' => 'cu_webauth.admin.inc',
+    );
+  $items['secure/cu_webauth/hello'] = array(
+    'title' => 'Cornell University Login - User',
+    'description' => 'User Information',
+    'page callback' => 'cu_webauth_hello',
+    //'access callback' => TRUE,
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'file' => 'cu_webauth.admin.inc',
+    );
+
+  return $items;
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter.
+ */
+function cu_webauth_form_node_form_alter(&$form, &$form_state, $form_id) {
+  if (isset($form['#node']) && cu_webauth_can_set_auth()) {
+    // Find the content type of the node we are editing.
+    $content_type = $form['#node']->type;
+    // webforms have node_form as a base form id
+    // trial version without removing checkbox from webforms...
+    if (true || $content_type != 'webform') {
+      // Alter the other node forms here.
+      $node = $form['#node'];
+      $cuwebauth_set = cu_webauth_get_cuwebauth($node);
+      $form['cuwebauth'] = array(
+        '#type' => 'checkbox',
+        '#title' => 'Require CUWebLogin?',
+        '#default_value' => $cuwebauth_set ? 1 : 0,
+        '#weight' => -10,
+      );
+    }
+  }
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function cu_webauth_node_insert($node) {
+  cu_webauth_manage_cuwebuath($node);
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function cu_webauth_node_update($node) {
+  cu_webauth_manage_cuwebuath($node);
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function cu_webauth_node_delete($node) {
+  cu_webauth_manage_cuwebuath($node);
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function cu_webauth_node_view($node, $view_mode = 'full') {
+  if ((! cu_webauth_can_bypass_auth()) && cu_webauth_get_cuwebauth($node)) {
+    cu_webauth_authenticate();
+  }
 }
 
 /**
@@ -143,61 +268,6 @@ function cu_webauth_form_submit($form, &$form_state) {
 }
 
 /**
- * Implements hook_menu().
- * this adds a page called 'cu_webauth' to any site using this module
- */
-function cu_webauth_menu() {
-  $items = array();
-
-  $items['secure/cu_webauth_pin'] = array(
-    'title' => 'Cornell University Mobile Login',
-    'description' => 'Login with CUWebAuth and pin',
-    'page callback' => 'cu_webauth_pin_page',
-    //'access callback' => TRUE,
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-    );
-
-  $items['secure/cu_webauth'] = array(
-    'title' => 'Cornell University Login',
-    'description' => 'Login with CUWebAuth',
-    'page callback' => 'cu_webauth_page2',
-    //'access callback' => TRUE,
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-    );
-  $items['secure/cu_webauth/cuwebauth'] = array(
-    'title' => 'Cornell University Login - CUWebAuth',
-    'description' => 'CUWebAuth',
-    'page callback' => 'cu_webauth_cuwebauth',
-    //'access callback' => TRUE,
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-    'file' => 'cu_webauth.admin.inc',
-    );
-  $items['secure/cu_webauth/account'] = array(
-    'title' => 'Cornell University Login - Account',
-    'description' => 'Account Check',
-    'page callback' => 'cu_webauth_account',
-    //'access callback' => TRUE,
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-    'file' => 'cu_webauth.admin.inc',
-    );
-  $items['secure/cu_webauth/hello'] = array(
-    'title' => 'Cornell University Login - User',
-    'description' => 'User Information',
-    'page callback' => 'cu_webauth_hello',
-    //'access callback' => TRUE,
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-    'file' => 'cu_webauth.admin.inc',
-    );
-
-  return $items;
-}
-
-/**
  * callback function for login page
  */
 function cu_webauth_page2() {
@@ -232,7 +302,7 @@ function cu_webauth_pin_page() {
  */
 function cu_webauth_create_and_login_user($netid) {
   // Log user in, or register new user if not already present
-  user_external_login_register($netid, 'cuwebauth');
+  user_external_login_register($netid, AUTHENTICATION_MODULE_NAME);
 
   // Write session, update timestamp, run user 'login' hook
   $edit = array();
@@ -305,7 +375,7 @@ function cu_webauth_valid_user($username) {
  */
 function cu_webauth_created_user($username) {
   $authmaps = user_get_authmaps($username);
-  if (isset($authmaps['cuwebauth']) && $authmaps['cuwebauth'] == $username) {
+  if (isset($authmaps[AUTHENTICATION_MODULE_NAME]) && $authmaps[AUTHENTICATION_MODULE_NAME] == $username) {
     return TRUE;
   }
   return FALSE;
@@ -435,7 +505,7 @@ function cu_webauth_user_operations() {
  */
 function cu_webauth_claim_user($users, $view) {
   // see http://api.drupal.org/api/drupal/modules--user--user.module/function/user_external_login_register/6
-  $module = 'cuwebauth';
+  $module = AUTHENTICATION_MODULE_NAME;
   foreach ($users as $uid) {
     // TODO Convert "user_load" to "user_load_multiple" if "$uid" is other than a uid.
     // To return a single user object, wrap "user_load_multiple" with "array_shift" or equivalent.
