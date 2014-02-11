@@ -264,12 +264,8 @@ function cu_webauth_form_submit($form, &$form_state) {
   else if (isset($form_state['cu_webauth']['redirect'])) {
     // just go to the login page to handle all the issues
     //$form_state['redirect'] = $form_state['cu_webauth']['redirect'];
-    $url = $_SERVER['SERVER_NAME'];
-    drupal_set_message(t($url), 'status', FALSE);
-    $form_state['redirect'] = array(
-      'secure/cu_webauth',
-      array('absolute' => TRUE, 'https' => TRUE),
-      );
+    $domain = $_SERVER['SERVER_NAME'];
+    $form_state['redirect'] = "https://$domain/secure/cu_webauth";
   }
 }
 
