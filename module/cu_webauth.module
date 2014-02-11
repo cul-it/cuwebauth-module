@@ -498,7 +498,7 @@ function cu_webauth_action_info() {
  * @return [type]          [description]
  */
 function cu_webauth_set_authentication_module(&$node, $context) {
-  $uid = $node['uid'];
+  $uid = $node->uid;
   $message = print_r($uid, TRUE);
   drupal_set_message($message);
 }
