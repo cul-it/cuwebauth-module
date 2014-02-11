@@ -20,11 +20,12 @@ function cu_webauth_verify_netid() {
  * and upon successful authentication, it will set a 'netid' cookie.
  */
 function cu_webauth_authenticate($destination = '', $permit = '') {
-  $netID = getenv('REMOTE_USER');
-  if (isset($netID) && $netID != '') {
-    return $netID;
-  }
-  else if (cu_webauth_verify_netid()) {
+  // $netID = getenv('REMOTE_USER');
+  // if (isset($netID) && $netID != '') {
+  //   return $netID;
+  // }
+  // else
+  if (cu_webauth_verify_netid()) {
     return $_COOKIE['netid'];
   }
   else {
