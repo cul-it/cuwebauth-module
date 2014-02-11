@@ -30,6 +30,23 @@ function cu_webauth_permission() {
 }
 
 /**
+ * Don't bother admins or various content managers with authentication
+ * when they are already authenticated with Drupal.
+ * now based on cul_common_permission
+ */
+function cu_webauth_can_bypass_auth($roles = NULL) {
+  return user_access('bypass cu_webauth');
+}
+
+/**
+ * Who is allowed to set CUWebAuth on nodes,
+ * now based on cul_common_permission
+ */
+function cu_webauth_can_set_auth($roles = NULL) {
+  return user_access('access cu_webauth checkbox');
+}
+
+/**
  * Implements hook_init().
  * this implements the patch for panels on http://drupal.org/node/362065
  */
