@@ -167,6 +167,7 @@ function cu_webauth_node_view($node, $view_mode = 'full') {
   $bypass = cu_webauth_can_bypass_auth();
   $needs_auth = cu_webauth_get_cuwebauth($node);
   drupal_set_message(t("cu_webauth_node_view $bypass,$needs_auth"), 'status', FALSE);
+  return;
   if ((! cu_webauth_can_bypass_auth()) && cu_webauth_get_cuwebauth($node)) {
     cu_webauth_authenticate();
   }
