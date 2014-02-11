@@ -173,7 +173,10 @@ function cu_webauth_node_view($node, $view_mode = 'full') {
       $options = array();
       drupal_goto($dest, $options, 301);
     }
-    cu_webauth_authenticate();
+    else {
+      drupal_set_message(t('authenticating'), 'status', FALSE);
+      cu_webauth_authenticate();
+    }
   }
 }
 
