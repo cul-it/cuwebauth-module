@@ -434,7 +434,7 @@ function cu_webauth_regular_login_validate($form, &$form_state) {
 function cu_webauth_get_email_address($netid) {
   // get email address from LDAP
   $fields = 'Mail';
-  $vals = get_ldap_data($fields, $netid);
+  $vals = cu_webauth_get_ldap_data($fields, $netid);
   return isset($vals['mail']) ? $vals['mail'] : FALSE;
 }
 
@@ -473,6 +473,33 @@ function cu_webauth_user_insert(&$edit, $account, $category) {
 function cu_webauth_user_logout($account) {
   drupal_set_message(t('cu_webauth_user logout'));
   cu_webauth_logout();
+}
+
+/**
+ * Implements hook_action_info().
+ */
+function cu_webauth_action_info() {
+  return array(
+    'cu_webauth_set_authentication_module' => array(
+      'type' => 'user',
+      'label' => t('Let user authenticate with CUWebAuth'),
+      'behavior' => array('changes_property'),
+      'configurable' => FALSE,
+      'vbo_configurable' => FALSE,
+      'triggers' => array('any'),
+    ),
+  );
+}
+
+/**
+ * action for Views Bulk Operations
+ * @param  [type] $node    [description]
+ * @param  [type] $context [description]
+ * @return [type]          [description]
+ */
+function cu_webauth_set_authentication_module(&$node, $context) {
+  $message = print_r($node, TRUE);
+  drupal_set_message($message);
 }
 
 /**
