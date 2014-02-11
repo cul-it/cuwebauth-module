@@ -493,18 +493,16 @@ function cu_webauth_action_info() {
 
 /**
  * action for Views Bulk Operations to change authentication module for a user
- * @param  user $node    a user object
+ * @param  user $account    a user object
  * @param  [type] $context VBO context
  * @return [type]          nothing
  */
-function cu_webauth_set_authentication_module(&$node, $context) {
+function cu_webauth_set_authentication_module(&$account, $context) {
   $module = AUTHENTICATION_MODULE_NAME;
-  $uid = $node->uid;
-  $auser = user_load($uid);
-  $userinfo = array(
-    "authname_$module" => $auser->name,
+  $authmaps = array(
+    "authname_$module" => $account->name,
     );
-  $account = user_save($auser, $userinfo);
+  user_set_authmaps($account, $authmaps);
 }
 
 /**
