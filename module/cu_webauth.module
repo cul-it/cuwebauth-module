@@ -166,7 +166,12 @@ function cu_webauth_node_delete($node) {
  */
 function cu_webauth_node_view($node, $view_mode = 'full') {
   if ((! cu_webauth_can_bypass_auth()) && cu_webauth_get_cuwebauth($node)) {
-    $dest = 'https://' . $_SERVER['SERVER_NAME'] . '/' . request_path();
+    if (!cu_webauth_https()) {
+      // go to https version of this page before authenticate
+      drupal_set_message(t('redirected'), 'status', FALSE);
+      $dest = 'https://' . $_SERVER['SERVER_NAME'] . '/' . request_path();
+      drupal_goto($dest, options, 301);
+    }
     cu_webauth_authenticate($dest);
   }
 }
