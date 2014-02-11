@@ -263,7 +263,11 @@ function cu_webauth_form_submit($form, &$form_state) {
   }
   else if (isset($form_state['cu_webauth']['redirect'])) {
     // just go to the login page to handle all the issues
-    $form_state['redirect'] = $form_state['cu_webauth']['redirect'];
+    //$form_state['redirect'] = $form_state['cu_webauth']['redirect'];
+    $form_state['redirect'] = array(
+      'secure/cu_webauth',
+      array('https' => TRUE),
+      );
   }
 }
 
