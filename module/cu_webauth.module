@@ -186,7 +186,7 @@ function cu_webauth_block_save($delta, $edit) {
 function cu_webauth_block_view($delta) {
   switch ($delta) {
     case 'cu_webauth_info':
-      $block['subject'] = t("CU Login");
+      $block['subject'] = t("Cornell University Login");
       if (user_is_logged_in()) {
         $block['content'] = t('you are logged in');
       }
