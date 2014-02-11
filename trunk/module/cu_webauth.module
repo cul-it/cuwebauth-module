@@ -178,6 +178,9 @@ function cu_webauth_node_view($node, $view_mode = 'full') {
       cu_webauth_authenticate();
     }
   }
+  else {
+    drupal_set_message(t('bypasses'), 'status', FALSE);
+  }
 }
 
 /**
