@@ -103,7 +103,7 @@ function cu_webauth_menu() {
  * Implements hook_form_BASE_FORM_ID_alter.
  */
 function cu_webauth_form_node_form_alter(&$form, &$form_state, $form_id) {
-  drupal_set_message(t('cu_webauth_form_node_form_alter'), 'status', FALSE)
+  drupal_set_message(t('cu_webauth_form_node_form_alter'), 'status', FALSE);
   if (isset($form['#node']) && cu_webauth_can_set_auth()) {
     // Find the content type of the node we are editing.
     $content_type = $form['#node']->type;
