@@ -204,7 +204,7 @@ function cu_webauth_block_view($delta) {
 function cu_webauth_form($form) {
   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => t('CU Login'),
+    '#value' => t('Cornell Login'),
     );
   return $form;
 }
