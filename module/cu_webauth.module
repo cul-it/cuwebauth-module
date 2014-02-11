@@ -12,6 +12,13 @@
 define("AUTHENTICATION_MODULE_NAME", "culauth"); // same as cul_login
 
 require_once(dirname(__FILE__) . '/helpers/cu_webauth.php');
+require_once(dirname(__FILE__) . '/helpers/cu_webauth_ldap.php');
+
+if (!functions_exists('cu_authenticate')) {
+  function cu_authenticate($destination = '', $permit = '') {
+    return cu_webauth_authenticate($destination, $permit);
+  }
+}
 
 /**
  * Implements hook_permission.
