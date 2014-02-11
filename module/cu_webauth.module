@@ -492,19 +492,24 @@ function cu_webauth_action_info() {
 }
 
 /**
- * action for Views Bulk Operations
- * @param  [type] $node    [description]
- * @param  [type] $context [description]
- * @return [type]          [description]
+ * action for Views Bulk Operations to change authentication module for a user
+ * @param  user $node    a user object
+ * @param  [type] $context VBO context
+ * @return [type]          nothing
  */
 function cu_webauth_set_authentication_module(&$node, $context) {
+  $module = AUTHENTICATION_MODULE_NAME;
   $uid = $node->uid;
-  $message = print_r($uid, TRUE);
-  drupal_set_message($message);
+  $auser = user_load($uid);
+  $userinfo = array(
+    "authname_$module" => $auser->name,
+    );
+  $account = user_save($auser, $userinfo);
 }
 
 /**
  * Implements hook_user().
+ * ONLY IN DRUPAL 6
  */
 function cu_webauth_user_OLD($op, &$edit, &$account, $category = NULL) { }
 
