@@ -104,7 +104,7 @@ function cu_webauth_manage_cuwebuath($node) {
     if ($node->cuwebauth && ! $cuwebauth) {
       // TODO Please review the conversion of this statement to the D7 database API syntax.
       /* db_query('INSERT INTO {cuwebauth} (nid) VALUES (%d)', $node->nid) */
-      $id = db_insert('cu_webauth')
+      $id = db_insert('cuwebauth')
   ->fields(array(
     'nid' => $node->nid,
   ))
@@ -113,7 +113,7 @@ function cu_webauth_manage_cuwebuath($node) {
     else if (! $node->cuwebauth && $cuwebauth) {
       // TODO Please review the conversion of this statement to the D7 database API syntax.
       /* db_query('DELETE FROM {cuwebauth} WHERE nid = %d', $node->nid) */
-      db_delete('cu_webauth')
+      db_delete('cuwebauth')
   ->condition('nid', $node->nid)
   ->execute();
     }
