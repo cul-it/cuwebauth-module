@@ -231,7 +231,10 @@ function cu_webauth_block_view($delta) {
         $block['content'] = t('you are logged in');
       }
       else {
-        $block['content'] = drupal_get_form('cu_webauth_form');
+        //$block['content'] = drupal_get_form('cu_webauth_form');
+        $block['content'] = l(t('Log in using Cornell University netid.'),
+          'secure/cu_webauth', array('absolute' => TRUE, 'HTTPS' => TRUE)
+          );
       }
       return $block;
       break;
@@ -305,7 +308,7 @@ function cu_webauth_form_submit($form, &$form_state) {
     // just go to the login page to handle all the issues
     //$form_state['redirect'] = $form_state['cu_webauth']['redirect'];
     $domain = $_SERVER['SERVER_NAME'];
-    $form_state['redirect'] = "https://$domain/secure/cu_webauth";
+    $form_state['redirect'] = "https://$domainsecure/cu_webauth/";
   }
 }
 
