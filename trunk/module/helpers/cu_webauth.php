@@ -31,7 +31,6 @@ function cu_webauth_authenticate($destination = '', $permit = '') {
   // }
   // else
   if (cu_webauth_verify_netid()) {
-    drupal_set_message("Returning netid from cookie");
     return $_COOKIE['netid'];
   }
   else {
@@ -48,9 +47,6 @@ function cu_webauth_authenticate($destination = '', $permit = '') {
     if (empty($destination)) {
       $destination = request_uri();
     }
-    cu_webauth_verify_netid(); //jgrtest
-    drupal_set_message("path: $path");
-    drupal_set_message("destination: $destination");
 
     drupal_goto($path, array('query' => array('destination' => $destination)));
   }

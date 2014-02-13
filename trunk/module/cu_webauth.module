@@ -334,7 +334,6 @@ function cu_webauth_page2() {
   else {
     $path = "/secure/cu_webauth/cuwebauth";
   }
-  drupal_set_message("cu_webauth_page2 going to $path");
   drupal_goto($path);
 }
 
@@ -383,7 +382,6 @@ function cu_webauth_test_authentication() {
  * login via CUWebAuth and return netid or FALSE
  */
 function cu_webauth_authenticate_user($destination = NULL) {
-  drupal_set_message("cu_webauth_authenticate_user");
   if (function_exists('cu_webauth_authenticate')) {
     if ($destination == NULL) {
       // put url of current page into destination
