@@ -4,6 +4,10 @@ global $cu_webauth_secret_cache_name;
 $cu_webauth_secret_cache_name = 'cu_webauth_net_id_secret';
 
 function cu_webauth_verify_netid() {
+  $msg[] = "cu_webauth_verify_netid"
+  $msg[] = isset($_COOKIE['netid']) ? 'has netid' : 'no netid';
+  $msg[] = isset($_COOKIE['verify_netid']) ? 'has verify_netid' : 'no verify_netid';
+  drupal_set_message(implode(' ', $msg));
   $verified = FALSE;
   if (isset($_COOKIE['netid']) && isset($_COOKIE['verify_netid'])) {
     $secret = get_and_set_cu_webauth_secret();
