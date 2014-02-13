@@ -24,12 +24,14 @@ function cu_webauth_verify_netid() {
  * and upon successful authentication, it will set a 'netid' cookie.
  */
 function cu_webauth_authenticate($destination = '', $permit = '') {
+  drupal_set_message(t("cu_webauth_authenticate"), 'status', FALSE)
   // $netID = getenv('REMOTE_USER');
   // if (isset($netID) && $netID != '') {
   //   return $netID;
   // }
   // else
   if (cu_webauth_verify_netid()) {
+    drupal_set_message("Returning netid from cookie");
     return $_COOKIE['netid'];
   }
   else {
