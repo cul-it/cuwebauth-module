@@ -49,6 +49,7 @@ function cu_webauth_authenticate($destination = '', $permit = '') {
       $destination = request_uri();
     }
     cu_webauth_verify_netid(); //jgrtest
+    drupal_set_message("path: $path");
     drupal_set_message("destination: $destination");
 
     drupal_goto($path, array('query' => array('destination' => $destination)));
