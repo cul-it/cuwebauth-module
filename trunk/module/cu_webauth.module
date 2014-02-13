@@ -28,8 +28,9 @@ if (!function_exists('cu_authenticate')) {
  * Implements hook_permission.
  * I removed 'cu_authenticate' since by default Drupal keeps a session cookie
  * that keeps a user logged in for 2 weeks+, so a user restarting a browser could still
- * have this permission, thereby bypassing required authentication in
- * cu_webauth_node_view
+ * have this permission, thereby bypassing the authentication in
+ * cu_webauth_node_view that would provide user information to protected forms.
+ * The session cookie does not store netid for example.
  */
 function cu_webauth_permission() {
   return array(
@@ -50,7 +51,7 @@ function cu_webauth_permission() {
  * now based on cul_common_permission
  */
 function cu_webauth_can_bypass_auth($roles = NULL) {
-  return FALSE; // ser_access('bypass cu_webauth');
+  return FALSE; // user_access('bypass cu_webauth');
 }
 
 /**
@@ -399,9 +400,9 @@ function cu_webauth_authenticate_user($destination = NULL) {
 /**
  * logout via CUWebAuth
  */
-function cu_webauth_logout($destination = NULL, $delete_cuwa_cookies = FALSE) {
+function cu_webauth_logout() {
   if (function_exists('cu_webauth_do_logout')) {
-    cu_webauth_do_logout($destination, $delete_cuwa_cookies);
+    cu_webauth_do_logout();
     return TRUE;
   }
   return FALSE;

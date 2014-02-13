@@ -50,24 +50,13 @@ function cu_webauth_authenticate($destination = '', $permit = '') {
 /**
  * Simulate a CUWebAuth logout.
  */
-function cu_webauth_do_logout($logout_url = NULL, $include_cu_webauth_cookies = FALSE) {
+function cu_webauth_do_logout() {
   unset($_COOKIE['netid']);
   unset($_COOKIE['verify_netid']);
   //setcookie('netid', '', REQUEST_TIME - 3600);
   //setcookie('verify_netid', '', REQUEST_TIME - 3600);
   setcookie('netid', "", time() - 3600, '/', '.cornell.edu');
   setcookie('verify_netid', "", time() - 3600, '/', '.cornell.edu');
-  if ($include_cu_webauth_cookies) {
-    unset($_COOKIE['cu_webauth_ltgttime']);
-    unset($_COOKIE['cu_webauth_LastWeblogin']);
-    unset($_COOKIE['cu_webauth_login2']);
-    setcookie('cu_webauth_ltgttime', '', REQUEST_TIME - 3600);
-    setcookie('cu_webauth_LastWeblogin', '', REQUEST_TIME - 3600);
-    setcookie('cu_webauth_login2', '', REQUEST_TIME - 3600);
-  }
-  if ($logout_url) {
-    drupal_goto($logout_url);
-  }
 }
 
 /**
