@@ -53,8 +53,10 @@ function cu_webauth_authenticate($destination = '', $permit = '') {
 function cu_webauth_do_logout($logout_url = NULL, $include_cu_webauth_cookies = FALSE) {
   unset($_COOKIE['netid']);
   unset($_COOKIE['verify_netid']);
-  setcookie('netid', '', REQUEST_TIME - 3600);
-  setcookie('verify_netid', '', REQUEST_TIME - 3600);
+  //setcookie('netid', '', REQUEST_TIME - 3600);
+  //setcookie('verify_netid', '', REQUEST_TIME - 3600);
+  setcookie('netid', null, -1, '/');
+  setcookie('verify_netid', null, -1, '/');
   if ($include_cu_webauth_cookies) {
     unset($_COOKIE['cu_webauth_ltgttime']);
     unset($_COOKIE['cu_webauth_LastWeblogin']);
