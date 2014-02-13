@@ -7,7 +7,7 @@
  * @link http://identity.cit.cornell.edu/ds/index.html .
  *
  */
-function get_ldap_data($return_fields = NULL, $netid = NULL) {
+function cu_webauth_get_ldap_data($return_fields = NULL, $netid = NULL) {
   if ($netid == NULL) {
     $netid = cu_authenticate();
   }
@@ -51,13 +51,13 @@ function get_ldap_data($return_fields = NULL, $netid = NULL) {
 }
 
 /**
- * Call get_ldap_data() via URL, return JSON.
+ * Call cu_webauth_get_ldap_data() via URL, return JSON.
  *
  */
-function get_ldap_json() {
+function cu_webauth_get_ldap_json() {
   $return_fields = NULL;
   if (isset($_GET['return_fields'])) {
     $return_fields = urldecode($_GET['return_fields']);
   }
-  drupal_json_output(get_ldap_data($return_fields));
+  drupal_json_output(cu_webauth_get_ldap_data($return_fields));
 }
