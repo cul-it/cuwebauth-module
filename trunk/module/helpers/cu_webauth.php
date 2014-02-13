@@ -48,6 +48,7 @@ function cu_webauth_authenticate($destination = '', $permit = '') {
     if (empty($destination)) {
       $destination = request_uri();
     }
+    drupal_set_message("destination: $destination");
 
     drupal_goto($path, array('query' => array('destination' => $destination)));
   }
