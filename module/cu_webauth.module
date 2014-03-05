@@ -241,8 +241,8 @@ function cu_webauth_block_view($delta) {
       }
       else {
         //$block['content'] = drupal_get_form('cu_webauth_form');
-        $block['content'] = l(t('Log in using Cornell University netid.'),
-          'secure/cu_webauth', array('absolute' => TRUE, 'HTTPS' => TRUE)
+        $block['content'] = l(t('Log in using Cornell University NetID'),
+          'secure/cu_webauth', array('attributes' => array('absolute' => TRUE, 'HTTPS' => TRUE, 'class' => 'btn btn-default'))
           );
       }
       return $block;
