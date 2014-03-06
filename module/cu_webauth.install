@@ -25,7 +25,7 @@ function cu_webauth_uninstall() {
  * Implements hook_schema().
  */
 function cu_webauth_schema() {
-  $schema['cuwebauth_nid'] = array(
+  $schema['cuwebauthnid'] = array(
         'fields' => array(
             'nid' => array(
                 'type' => 'int',
