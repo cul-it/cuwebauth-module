@@ -74,7 +74,7 @@ function cu_webauth_logout_from_url() {
 function cu_webauth_get_cuwebauth($node) {
   if (isset($node->nid)) {
     $nid = $node->nid;
-    $result = db_query('SELECT nid FROM {cuwebauth} where nid = :nid',
+    $result = db_query('SELECT nid FROM {cuwebauthnid} where nid = :nid',
     array(':nid' => $node->nid));
     return $result->fetchColumn();
 
@@ -96,7 +96,7 @@ function cu_webauth_manage_cuwebuath($node) {
     if ($node->cuwebauth && ! $cuwebauth) {
       // TODO Please review the conversion of this statement to the D7 database API syntax.
       /* db_query('INSERT INTO {cuwebauth} (nid) VALUES (%d)', $node->nid) */
-      $id = db_insert('cuwebauth')
+      $id = db_insert('cuwebauthnid')
   ->fields(array(
     'nid' => $node->nid,
   ))
@@ -105,7 +105,7 @@ function cu_webauth_manage_cuwebuath($node) {
     else if (! $node->cuwebauth && $cuwebauth) {
       // TODO Please review the conversion of this statement to the D7 database API syntax.
       /* db_query('DELETE FROM {cuwebauth} WHERE nid = %d', $node->nid) */
-      db_delete('cuwebauth')
+      db_delete('cuwebauthnid')
   ->condition('nid', $node->nid)
   ->execute();
     }
