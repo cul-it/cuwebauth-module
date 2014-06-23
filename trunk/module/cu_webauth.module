@@ -337,7 +337,7 @@ function cu_webauth_page2() {
   else {
     $path = "/secure/cu_webauth/cuwebauth";
   }
-  drupal_goto($path);
+  drupal_goto($path, array('query'=>drupal_get_destination()) );
 }
 
 /**
