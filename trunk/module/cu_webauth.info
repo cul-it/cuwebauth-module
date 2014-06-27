@@ -3,3 +3,4 @@ name = Cornell Web Authorize
 description = Cornell University authorization using CUWebAuth
 package = Cornell University
 core = 7.x
+dependencies[] = cul_common
