@@ -18,11 +18,11 @@ require_once(dirname(__FILE__) . '/helpers/cu_webauth_ldap.php');
  * implements cu_authenticate to support legacy code when
  * cul_common is not available
  */
-if (!function_exists('cu_authenticate')) {
-  function cu_authenticate($destination = '', $permit = '') {
-    return cu_webauth_authenticate($destination, $permit);
-  }
-}
+// if (!function_exists('cu_authenticate')) {
+//   function cu_authenticate($destination = '', $permit = '') {
+//     return cu_webauth_authenticate($destination, $permit);
+//   }
+// }
 
 /**
  * Implements hook_permission.
