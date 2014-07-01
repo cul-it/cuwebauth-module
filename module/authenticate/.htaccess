@@ -2,3 +2,6 @@ AuthName CORNELL
 AuthType All
 require valid-user
 require valid-user@CORNELL.EDU
+CUWAwak0Realms "NetID,GuestID"
+CUWAwak2Name "NetID OR GuestID"
+
