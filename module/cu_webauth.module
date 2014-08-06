@@ -222,6 +222,11 @@ function cu_webauth_block_configure($delta) {
         '#title' => t('Required CUWebAuth permit (eg. library)'),
         '#default_value' => variable_get('cu_webauth_block_required_permit', ''),
         );
+  $form['cu_webauth_create_accounts'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Automatically create accounts for new CU_WEBAUTH users.'),
+        '#default_value' => variable_get('cu_webauth_create_accounts', TRUE),
+        );
   return $form;
 }
 
@@ -230,6 +235,7 @@ function cu_webauth_block_configure($delta) {
  */
 function cu_webauth_block_save($delta, $edit) {
   variable_set('cu_webauth_block_required_permit', t("@permit", array('@permit' => $edit['cu_webauth_block_required_permit'])));
+  variable_set('cu_webauth_create_accounts', isset($edit['cu_webauth_create_accounts']) ? $edit['cu_webauth_create_accounts'] : variable_get('cu_webauth_create_accounts', TRUE));
 }
 
 /**
@@ -313,8 +319,12 @@ function cu_webauth_form_validate($form, &$form_state) {
 function cu_webauth_form_submit($form, &$form_state) {
   if (isset($form_state['cu_webauth']['valid_netid'])) {
     $netid = $form_state['cu_webauth']['valid_netid'];
-    cu_webauth_create_and_login_user($netid);
-    drupal_set_message(t('Logged in as %name', array('%name' => $netid)));
+    if (cu_webauth_create_and_login_user($netid)) {
+      drupal_set_message(t('Logged in as %name', array('%name' => $netid)));
+    }
+    else {
+      form_set_error('form', t('Creating a new user for %name is not permitted.', array('%name', $netid)));
+    }
   }
   else if (isset($form_state['cu_webauth']['redirect'])) {
     // just go to the login page to handle all the issues
@@ -359,12 +369,22 @@ function cu_webauth_pin_page() {
  * create a new user if necessary but log them in
  */
 function cu_webauth_create_and_login_user($netid) {
+  $create_users = variable_get('cu_webauth_create_accounts', TRUE);
+  if (!$create_users) {
+    //check if user exists
+    $account = user_external_load($netid);
+    if (!$account) {
+      // user does not already exist and we're not automatically creating users
+      return FALSE;
+    }
+  }
   // Log user in, or register new user if not already present
   user_external_login_register($netid, AUTHENTICATION_MODULE_NAME);
 
   // Write session, update timestamp, run user 'login' hook
   $edit = array();
   user_login_finalize($edit);
+  return TRUE;
 }
 
 /**
