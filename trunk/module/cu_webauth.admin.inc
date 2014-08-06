@@ -59,7 +59,7 @@ function cu_webauth_account() {
           drupal_set_message(t('Creating a new account for CUL user @netid.', array('@netid' => $netid)));
         }
         else {
-          form_set_error('cu_webauth', t('Creating a new user for %name is not permitted.', array('%name', $netid)));
+          form_set_error('cu_webauth', t('Creating a new user for @name is not permitted.', array('@name', $netid)));
         }
         drupal_goto($path);
       }
