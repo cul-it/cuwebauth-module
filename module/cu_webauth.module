@@ -323,7 +323,7 @@ function cu_webauth_form_submit($form, &$form_state) {
       drupal_set_message(t('Logged in as %name', array('%name' => $netid)));
     }
     else {
-      form_set_error('form', t('Creating a new user for %name is not permitted.', array('%name', $netid)));
+      form_set_error('cu_webauth', t('Creating a new user for %name is not permitted.', array('%name', $netid)));
     }
   }
   else if (isset($form_state['cu_webauth']['redirect'])) {
