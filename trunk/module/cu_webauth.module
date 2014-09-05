@@ -344,6 +344,7 @@ function cu_webauth_form_validate($form, &$form_state) {
  */
 function cu_webauth_form_submit($form, &$form_state) {
   if (isset($form_state['cu_webauth']['valid_netid'])) {
+    dsm('cu_webauth_form_submit');
     $netid = $form_state['cu_webauth']['valid_netid'];
     if (cu_webauth_create_and_login_user($netid)) {
       drupal_set_message(t('Logged in as %name', array('%name' => $netid)));
