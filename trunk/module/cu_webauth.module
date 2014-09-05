@@ -247,43 +247,13 @@ function cu_webauth_new_account_prohibited_validate($element, $form_state) {
     dsm("raw_path: $raw_path");
     $path = drupal_lookup_path('source', $raw_path);
     dsm("path: $path");
+    dsm($element);
     if ($path === FALSE) {
-      form_set_error($element, t('Invalid path.'));
-      return FALSE;
-    }
-  }
-  return TRUE;
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- *
- * Adds validation of block configuration custom fields.
- */
-function cu_webauth_form_block_admin_configure_alter(&$form, &$form_state, $form_id) {
-  if ($form['module']['#value'] == 'cu_webauth') {
-    $form['#validate'][] = 'cu_webauth_block_validate';
-  }
-}
-
-/**
- * Form validation callback of block configuration.
- */
-function cu_webauth_block_validate(&$form, $form_state) {
-  $delta = $form['delta']['#value'];
-  if ($delta == 'cu_webauth_info') {
-    $raw_path = $form_state['values']['cu_webauth_new_account_prohibited'];
-    if (!empty($raw_path)) {
-      dsm("raw_path: $raw_path");
-      $path = drupal_lookup_path('source', $raw_path);
-      dsm("path: $path");
-      if ($path === FALSE) {
-        form_set_error($element, t('Field %field contains an invalid path.'));
-      }
+      form_set_error($element, t('Field %field contains an invalid path.',
+        array('%field' => 'test')));
     }
   }
 }
-
 
 /**
  * Implements hook_block_save().
