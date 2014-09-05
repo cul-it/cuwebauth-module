@@ -250,7 +250,7 @@ function cu_webauth_new_account_prohibited_validate($element, $form_state) {
     dsm($element);
     if ($path === FALSE) {
       form_set_error($element, t('Field %field contains an invalid path.',
-        array('%field' => 'test')));
+        array('%field' => $element['#title'])));
     }
   }
 }
