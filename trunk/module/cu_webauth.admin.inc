@@ -47,7 +47,8 @@ function cu_webauth_account() {
       }
     }
     else {
-      // no user with this name - create a new one
+      // no user with this name
+      // create a new one
       $email = cu_webauth_get_email_address($netid);
       if ($email === FALSE) {
         // oops - no email, sorry pal
@@ -59,7 +60,14 @@ function cu_webauth_account() {
           drupal_set_message(t('Creating a new account for CUL user @netid.', array('@netid' => $netid)));
         }
         else {
-          form_set_error('cu_webauth', t('Creating a new user for @name is not permitted.', array('@name' => $netid)));
+          $raw_path = variable_get('cu_webauth_new_account_prohibited', '');
+          $error_path = drupal_lookup_path('source', $raw_path);
+          if ($error_path === FALSE) {
+            form_set_error('cu_webauth', t('Creating a new user for @name is not permitted.', array('@name' => $netid)));
+          }
+          else {
+            drupal_goto($error_path);
+          }
         }
         drupal_goto($path);
       }
