@@ -233,7 +233,7 @@ function cu_webauth_block_configure($delta) {
         '#size' => 60,
         '#default_value' => variable_get('cu_webauth_new_account_prohibited', ''),
         '#description' => t('Path to redirect user to once it has been determined that the user does not have an account and an account is not going to be automatically created.'),
-       // '#element_validate' => array('cu_webauth_new_account_prohibited_validate')
+        '#element_validate' => array('cu_webauth_new_account_prohibited_validate')
         );
   return $form;
 }
@@ -243,10 +243,14 @@ function cu_webauth_block_configure($delta) {
  */
 function cu_webauth_new_account_prohibited_validate($element, $form_state) {
   $raw_path = $form_state['values']['cu_webauth_new_account_prohibited'];
-  $path = drupal_lookup_path('source', $raw_path);
-  if ($path === FALSE) {
-    form_set_error($element, t('Invalid path.'));
-    return FALSE;
+  if (!empty($raw_path)) {
+    dsm("raw_path: $raw_path");
+    $path = drupal_lookup_path('source', $raw_path);
+    dsm("path: $path");
+    if ($path === FALSE) {
+      form_set_error($element, t('Invalid path.'));
+      return FALSE;
+    }
   }
   return TRUE;
 }
