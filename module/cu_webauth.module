@@ -244,10 +244,7 @@ function cu_webauth_block_configure($delta) {
 function cu_webauth_new_account_prohibited_validate($element, $form_state) {
   $raw_path = $form_state['values']['cu_webauth_new_account_prohibited'];
   if (!empty($raw_path)) {
-    dsm("raw_path: $raw_path");
     $path = drupal_lookup_path('source', $raw_path);
-    dsm("path: $path");
-    dsm($element);
     if ($path === FALSE) {
       form_set_error($element, t('Field %field contains an invalid path.',
         array('%field' => $element['#title'])));
@@ -341,10 +338,11 @@ function cu_webauth_form_validate($form, &$form_state) {
 
 /**
  * Handle post-validation form submission
+ *
+ * TODO: not sure when this gets called!
  */
 function cu_webauth_form_submit($form, &$form_state) {
   if (isset($form_state['cu_webauth']['valid_netid'])) {
-    dsm('cu_webauth_form_submit');
     $netid = $form_state['cu_webauth']['valid_netid'];
     if (cu_webauth_create_and_login_user($netid)) {
       drupal_set_message(t('Logged in as %name', array('%name' => $netid)));
@@ -352,9 +350,8 @@ function cu_webauth_form_submit($form, &$form_state) {
     else {
       $raw_path = variable_get('cu_webauth_new_account_prohibited', '');
       $path = drupal_lookup_path('source', $raw_path);
-      dsm("path: $path");
       if ($path === FALSE) {
-        form_set_error('cu_webauth', t('IDIOT! Creating a new user for %name is not permitted.', array('%name' => $netid)));
+        form_set_error('cu_webauth', t('Creating a new user for %name is not permitted.', array('%name' => $netid)));
       }
       else {
         $form_state['redirect'] = $path;
