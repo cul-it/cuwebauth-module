@@ -272,6 +272,7 @@ function cu_webauth_block_validate(&$form, $form_state) {
     if (!empty($raw_path)) {
       dsm("raw_path: $raw_path");
       $path = drupal_lookup_path('source', $raw_path);
+      dsm("path: $path");
       if ($path === FALSE) {
         form_set_error($element, t('Field %field contains an invalid path.'));
       }
