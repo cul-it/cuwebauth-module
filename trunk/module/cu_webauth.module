@@ -230,6 +230,7 @@ function cu_webauth_block_configure($delta) {
   $form['cu_webauth_new_account_prohibited'] = array(
         '#type' => 'textfield',
         '#title' => t('Path to New Accounts Prohibited page'),
+        '#size' => 60,
         '#default_value' => variable_get('cu_webauth_new_account_prohibited', ''),
         '#description' => t('Path to redirect user to once it has been determined that the user does not have an account and an account is not going to be automatically created.'),
         '#element_validate' => array('cu_webauth_new_account_prohibited_validate')
@@ -245,8 +246,34 @@ function cu_webauth_new_account_prohibited_validate($element, $form_state) {
   $path = drupal_lookup_path('source', $raw_path);
   if ($path === FALSE) {
     form_set_error($element, t('Invalid path.'));
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Adds validation of block configuration custom fields.
+ */
+function cu_webauth_form_block_admin_configure_alter(&$form, &$form_state, $form_id) {
+  if ($form['module']['#value'] == 'cu_webauth') {
+    $form['#validate'][] = 'cu_webauth_block_validate';
   }
 }
+/**
+ * Form validation callback of block configuration.
+ */
+function cu_webauth_block_validate(&$form, $form_state) {
+  $delta = $form['delta']['#value'];
+  dsm("delta: $delta");
+  if ($delta == 'myblock') {
+    if (!valid_url($form_state['values']['website'], TRUE)) {
+      form_set_error('website', t('The value provided for %field is not a valid URL.', array('%field' => 'Website')));
+    }
+  }
+}
+
 
 /**
  * Implements hook_block_save().
