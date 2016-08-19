@@ -1,4 +1,4 @@
-cu_webauth - Cornell University web authorize
+## cu_webauth - Cornell University web authorize
 
 Set up Apache so any drupal site path starting with
 secure/
